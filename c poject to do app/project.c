@@ -8,3 +8,15 @@ struct Task {
     char date[20];
     int completed; // 0 = pending , 1 = completed
 };
+// declaring function
+void addTask(struct Task tasks[],int*count);
+void viewTasks(struct Task tasks[],int count);
+void statusTask(struct Task tasks[],int count);
+void deleteTask(struct Task tasks[],int*count);
+
+int main(){
+    struct Task tasks[MAX];
+    int count = 0;
+    int choice;
+}
+
