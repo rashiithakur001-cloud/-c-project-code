@@ -13,10 +13,22 @@ void addTask(struct Task tasks[],int*count);
 void viewTasks(struct Task tasks[],int count);
 void statusTask(struct Task tasks[],int count);
 void deleteTask(struct Task tasks[],int*count);
-
 int main(){
     struct Task tasks[MAX];
     int count = 0;
     int choice;
+    while(1){
+    printf("\n====== list Menu ======\n");
+    printf("1. ADD TASK\n");
+    printf("2. VIEW TASK\n");
+    printf("3. MARK TASK AS COMPLETED\n");
+    printf("4. DELETE TASK\n");
+    printf("5. EXIT\n");
+ printf("Enter your choice: ");
+ scanf("%d",&choice);
+
+ getchar(); // clear new line from buffer
+
+ }
 }
 
