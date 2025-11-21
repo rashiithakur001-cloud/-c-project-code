@@ -28,7 +28,22 @@ int main(){
  scanf("%d",&choice);
 
  getchar(); // clear new line from buffer
+ switch (choice) {
+
+        case 1: // Add Task
+            if (count < MAX) {
+                printf("Enter task title: ");
+                fgets(todo[count].title, sizeof(todo[count].title), stdin);
+                todo[count].title[strcspn(todo[count].title, "\n")] = '\0';
+                todo[count].isDone = 0;
+                count++;
+                printf("Task added!\n");
+            } else {
+                printf("Task list is full!\n");
+            }
+            break;
 
  }
 }
+
 
