@@ -42,8 +42,20 @@ int main(){
                 printf("Task list is full!\n");
             }
             break;
+      case 2:                                     // View Tasks
+            if (count == 0) {
+                printf("No tasks available.\n");
+            } else {
+                printf("\n---- TASK LIST ----\n");
+                for (int i = 0; i < count; i++) {
+                    printf("%d. %s [%s]\n", i + 1, todo[i].title,
+                           todo[i].isDone ? "Completed" : "Pending");
+                }
+            }
+            break;
 
  }
 }
+
 
 
