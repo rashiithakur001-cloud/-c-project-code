@@ -53,9 +53,26 @@ int main(){
                 }
             }
             break;
+             case 3: // Mark Completed
+            if (count == 0) {
+                printf("No tasks to update.\n");
+            } else {
+                int num;
+                printf("Enter task number to mark completed: ");
+                scanf("%d", &num);
+                if (num >= 1 && num <= count) {
+                    todo[num - 1].isDone = 1;
+                    printf("Task marked as completed!\n");
+                } else {
+                    printf("Invalid task number.\n");
+                }
+            }
+            break;
+
 
  }
 }
+
 
 
 
