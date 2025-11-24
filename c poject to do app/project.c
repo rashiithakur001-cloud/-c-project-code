@@ -4,9 +4,9 @@
 #define MAX 50 // maximum no of tasks
 // structure for each task 
 struct Task {
-    char name[50];
+    char name[40];
     char date[20];
-    int completed; // 0 = pending , 1 = completed
+    int completed; // pending = 0, completed = 1
 };
 // declaring function
 void addTask(struct Task tasks[],int*count);
@@ -32,7 +32,7 @@ int main(){
 
         case 1: // Add Task
             if (count < MAX) {
-                printf("Enter task title: ");
+                printf("Enter task Name: ");
                 fgets(todo[count].title, sizeof(todo[count].title), stdin);
                 todo[count].title[strcspn(todo[count].title, "\n")] = '\0';
                 todo[count].isDone = 0;
@@ -53,7 +53,7 @@ int main(){
                 }
             }
             break;
-             case 3: // Mark Completed
+             case 3:           // Mark Completed
             if (count == 0) {
                 printf("No tasks to update.\n");
             } else {
@@ -72,6 +72,7 @@ int main(){
 
  }
 }
+
 
 
 
