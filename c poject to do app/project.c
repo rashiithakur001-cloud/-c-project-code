@@ -6,7 +6,7 @@
 struct Task {
     char name[40];
     char date[20];
-    int status; // pending = 0, completed = 1
+    int completed; // pending = 0, completed = 1
 };
 // declaring function
 void addTask(struct Task tasks[],int*count);
@@ -62,7 +62,7 @@ int main(){
                 scanf("%d", &num);
                 if (num >= 1 && num <= count) {
                     todo[num - 1].isDone = 1;
-                    printf("Task marked as completed!\n");
+                    printf("Task marked as completed..\n");
                 } else {
                     printf("Invalid task number.\n");
                 }
@@ -72,6 +72,7 @@ int main(){
 
  }
 }
+
 
 
 
