@@ -68,10 +68,30 @@ int main(){
                 }
             }
             break;
+       case 4: // Delete Task
+            if (count == 0) {
+                printf("No tasks to delete.\n");
+            } else {
+                int num;
+                printf("Enter task number to delete: ");
+                scanf("%d", &num);
+                if (num >= 1 && num <= count) {
+                    // Shift tasks to left
+                    for (int i = num - 1; i < count - 1; i++) {
+                        todo[i] = todo[i + 1];
+                    }
+                    count--;
+                    printf("Task deleted!\n");
+                } else {
+                    printf("Invalid task number.\n");
+                }
+            }
+            break;
 
 
  }
 }
+
 
 
 
