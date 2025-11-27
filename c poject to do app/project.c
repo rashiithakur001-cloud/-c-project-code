@@ -87,10 +87,20 @@ int main(){
                 }
             }
             break;
+     case 5: // Exit
+            printf("Exiting program. Goodbye!\n");
+            return 0;
+
+        default:
+            printf("Invalid choice! Try again.\n");
+        }
+    }
+}
 
 
  }
 }
+
 
 
 
