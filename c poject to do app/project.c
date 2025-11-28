@@ -88,7 +88,7 @@ int main(){
             }
             break;
      case 5: // Exit
-            printf("Exiting program. Goodbye!\n");
+            printf("Exiting program. \n");
             return 0;
 
         default:
@@ -98,8 +98,8 @@ int main(){
 }
 
 
- }
-}
+
+
 
 
 
