@@ -1,7 +1,7 @@
 // TO DO LIST APPLICATION 
 #include <stdio.h>         //for input/output
-#include <string.h>
-#include <stdlib.h>       //for exit function
+#include <string.h>        // for string related functions
+#include <stdlib.h>       //for exit function and atoi
 // constants
 #define MAX_TASKS     100                    // Maximum no of tasks
 #define TITLE_LEN     50                     // max length of the task title
@@ -31,7 +31,7 @@ void readline(const char *prompt, char *buffer, int buffersize) {
     printf("%s", prompt);                      // display prompt message              
     if (!fgets(buffer,buffersize,stdin)) {     // read user input                 
       puts("\n Input error!!!");                              
-      exit(1);
+      exit(1);                                 // exit program
     }
     clearNewline(buffer);                      // remove newline
  }
@@ -39,7 +39,7 @@ void readline(const char *prompt, char *buffer, int buffersize) {
 int readIntInRange(const char *prompt, int min, int max) {
   char line[80];             // buffer for input line
  int value, itemsRead;
-  while (1) {
+  while (1) {                  // loop until valid input recevied
     printf("%s", prompt);      // show prompt
      if (fgets(line,sizeof(line),stdin) == NULL)  {
     printf("Input error\n");  continue; 
@@ -76,13 +76,13 @@ void initTasks(Task tasks[], int maxTasks, int *taskCount, int*nextId){
   for (int i = 0; i < maxTasks; i++) {
       tasks[i] .id = 0;                     // reset task id
       tasks[i] .title[0] = '\0';            // empty title
-      tasks[i] .description[0] = '\0';
-      tasks[i] .deadline_date[0] = '\0';
-      tasks[i] .deadline_time[0] = '\0';
+      tasks[i] .description[0] = '\0';      // empty description
+      tasks[i] .deadline_date[0] = '\0';    // empty deadline date
+      tasks[i] .deadline_time[0] = '\0';    // empty deadline time
       tasks[i] .priority = 0;               // reset priority
       tasks[i] .isdone = 0;                
     }
- *taskCount = 0;             // reset task count
+ *taskCount = 0;             // reset task count start with zero
  *nextId = 1;               // start ids from 1 
 }
 // Function to save task to file
@@ -92,7 +92,7 @@ void saveTasksToFile(const Task tasks[], int taskCount) {
     printf("Error opening file for saving.\n");
     return;
   }
-for (int i=0; i<taskCount; i++){         // Write all tasks to file
+for (int i=0; i<taskCount; i++){         // Write all tasks to file in CSV format
  fprintf(file, "%d,%s,%s,%s,%s,%d,%d\n", tasks[i].id, tasks[i].title, tasks[i].description, 
           tasks[i].deadline_date,tasks[i].deadline_time, tasks[i].priority, tasks[i].isdone);
    }
@@ -106,9 +106,9 @@ void loadTasksFromFile(Task tasks[], int maxTasks, int *taskCount, int *nextId) 
     printf("No saved tasks file found.\n");
     return;
   }
-  char line[400];
-  while (fgets(line, sizeof(line), file) && *taskCount < maxTasks) {
-    Task t;
+  char line[400];                          // buffer to read each line
+  while (fgets(line, sizeof(line), file) && *taskCount < maxTasks) {   // read file line by line
+    Task t;                                      // temporary task structure
    if (sscanf(line, "%d,%50[^,],%200[^,],%11[^,],%5[^,],%d,%d", &t.id, t.title, t.description,
               t.deadline_date, t.deadline_time, &t.priority, &t.isdone)==7) {
       tasks[*taskCount] = t;                    // store task in array
@@ -125,42 +125,42 @@ void printMenu(){
  printf("\n=================================================\n");
  printf("            SIMPLE TODO LIST APP                 \n");
  printf("=================================================\n");
- printf(" 1. Add a new task\n 2. List all tasks\n 3. Mark task as done\n");
+ printf(" 1. Add a new task\n 2. List all tasks\n 3. Mark task as done\n");            // options for the user
  printf(" 4. Edit an existing task\n 5. Delete a task\n 6. Save tasks\n 7. Exit\n");
  printf("============================================\n");
 }
 // Function to find the idex of the task by id
 int findTaskIndexbyId(const Task tasks[], int taskCount, int id){
-    for (int i=0; i<taskCount; i++) if (tasks[i].id == id) return i;    // found
+    for (int i=0; i<taskCount; i++) if (tasks[i].id == id) return i;    // found return index
     return -1;                                                         // if not found
 }  
 // function to add a new task
 void addTask(Task tasks[], int maxTasks, int *taskCount, int *nextId) {
-    if (*taskCount >= maxTasks) {
+    if (*taskCount >= maxTasks) {       // check if the array is full
      printf("Task limit reached...");
       return;
   }
   Task newTask;
-  newTask.id = *nextId;
+  newTask.id = *nextId;             // assign next id
 printf("\n--- Add New Task ---\n");
 readline("Enter the task title: ", newTask.title, sizeof(newTask.title));
 readline("Enter the description of task: ", newTask.description, sizeof(newTask.description));
-while(1){
+while(1){                       // loop until date valid
   readline("Enter deadline date(YYYY-MM-DD): ",newTask.deadline_date, sizeof(newTask.deadline_date));
   if (isValidDate(newTask.deadline_date)) break;
   printf("Invalid date format.\n");
 }
-while (1) {
+while (1) {                    // loop unti; time valid
   readline("Enter deadline time (HH:MM): ", newTask.deadline_time, sizeof(newTask.deadline_time));
   if (isValidTime(newTask.deadline_time))  break;
   printf("Invalid time format.\n");
 }
 newTask.priority = readIntInRange("Enter priority (1=min)-(5=max)): ", 1, 5);
-newTask.isdone = 0;
+newTask.isdone = 0;                        // mark as not done
 
-tasks[*taskCount] = newTask;
-(*taskCount)++;
-(*nextId)++;
+tasks[*taskCount] = newTask;                  // add new task to list
+(*taskCount)++;                                // Increase  count
+(*nextId)++;                                    // increment next id
 printf("Task added successfully with (id %d).\n", newTask.id);
 }
 // Function to list all tasks
@@ -170,11 +170,13 @@ void listTasks(const Task tasks[], int taskCount) {
     printf("NO tasks found.\n");
     return;
   } 
-printf("%-4s | %-5s | %-30s | %-5s | %-40s\n", "ID","DONE","TITLE","PRIORITY","DESCRIPTION");
+printf("%-4s | %-5s | %-30s | %-8s | %-12s | %-8s | %-40s\n", 
+       "ID","DONE","TITLE","PRIORITY", "DATE","TIME","DESCRIPTION");
 printf("----------------------------------------------------------------------------------------------\n");
-for (int i = 0; i < taskCount; i++) {
-    const Task *t = &tasks[i];
-  printf("%-4d | %-5s | %-30s | %-5d | %-40s\n", t->id,(t->isdone ? "Yes" : "NO"), t->title, t->priority, t->description);
+for (int i = 0; i < taskCount; i++) {                 // loop through tasks
+    const Task *t = &tasks[i];                           // pointer for readability
+  printf("%-4d | %-5s | %-30s | %-8d | %-12s | %-8s | %-40s\n",
+     t->id,(t->isdone ? "Yes" : "NO"), t->title, t->priority, t->deadline_date, t->deadline_time, t->description);
  } 
 }
 // Function to mark a task as done
@@ -188,12 +190,12 @@ void markTaskAsDone(Task tasks[], int taskCount) {
   listTasks(tasks,taskCount);
   id = readIntInRange("Enter the id of the task to mark as done: ",1, 9999);
   index = findTaskIndexbyId(tasks,taskCount,id);
-  if (index == -1) 
+  if (index == -1)                                            // if not found
     printf("Task with id %d not found.\n",id);
   else { 
-   tasks[index].isdone = 1;
+   tasks[index].isdone = 1;                                  // mark done
     printf("Task with id %d marked as done.\n",id);
-    saveTasksToFile(tasks, taskCount);
+    saveTasksToFile(tasks, taskCount);                      // auto save
    }
  }
 // function to delete a task by id 
@@ -207,10 +209,10 @@ void deleteTask(Task tasks[], int *taskCount){
 listTasks(tasks, *taskCount);
 id = readIntInRange("Enter id of the task to delete: ", 1, 9999);
 index = findTaskIndexbyId(tasks, *taskCount, id);
-if (index == -1)
+if (index == -1)                                             //if id not found
  printf("Task with id %d not found.\n", id);
 else {
-    for (i=index; i<(*taskCount)-1; i++) tasks[i] = tasks[i+1];  // shift tasks left
+    for (i=index; i<(*taskCount)-1; i++) tasks[i] = tasks[i+1];  // shift  all tasks left
   (*taskCount)--;
   printf("Task with id %d has been deleted.\n", id);
   saveTasksToFile(tasks, *taskCount);    // saved after deleting 
@@ -227,7 +229,7 @@ void editTask(Task tasks[], int taskCount) {
 listTasks(tasks, taskCount);
 id = readIntInRange ("Enter id of the task to edit: ", 1, 9999);
 index = findTaskIndexbyId(tasks, taskCount, id);
-if (index == -1) {
+if (index == -1) {                                  // if id not found
     printf("Task with id %d not found.\n", id);
     return;
 }
@@ -254,15 +256,16 @@ printf("Welcome to the simple TO-DO list APP\n");
   while (Running) {         // main loop
   printMenu();
 choice = readIntInRange("Enter your choice(1-7): ", 1,7);
-  switch (choice) {
+  switch (choice) {                                         // process user choice
       case 1: addTask(tasks, MAX_TASKS, &taskCount, &nextId); break;
       case 2: listTasks(tasks, taskCount);      break;
       case 3: markTaskAsDone(tasks, taskCount); break;
       case 4: editTask(tasks, taskCount);       break;
       case 5: deleteTask(tasks, &taskCount);    break;
       case 6: saveTasksToFile(tasks, taskCount); break;      // Manual save option
-      case 7: printf("Exiting the TO-DO list app.\n"); Running = 0; break;
+      case 7: printf("Exiting the TO-DO list app.\n"); Running = 0;    // stop loop
+       break; 
     }
  }
-   return 0;
-} 
+   return 0;                  //exit success
+}
